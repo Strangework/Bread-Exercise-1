@@ -1,0 +1,17 @@
+Submit to us a deliverable of your choice that configures a Bread button with the
+following characteristics:
+Y • One product costing $100 is to be purchased
+N • There is both a 2-day and an overnight shipping option available for this product
+N • The tax charged to a purchaser should be 5% if the shipping address supplied by
+the customer within the Bread checkout flow is in the state of NY, otherwise tax
+should be 0
+Y • Since this test merchant is pre-configured in Bread’s system with loan offerings,
+we are able to display an “as low as $” number on the Bread button - show this.
+N • The button should always be a clickable button, whether or not a user is logged
+in
+N • When a user has completed a full checkout, they should receive a success
+message (if approved to proceed).
+N • If a user closes the form without completing the checkout:
+  N o If declined, they should receive an appropriate message
+  N o If approved, the customer should receive an appropriate message
+N • The color of the text font within the Bread button should be red

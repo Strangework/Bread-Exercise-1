@@ -1,0 +1,36 @@
+<html>
+  <head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://checkout-sandbox.getbread.com/bread.js" data-api-key="4dbfe30f-0841-45bf-b281-7de2f2c62a49"></script>
+  <title>Hiya!</title>
+</head>
+<body>
+  <div id="main">
+    <center>
+    <form id="bread-checkout-form" action="/confirm" method="POST">
+        <div id="bread-checkout-btn" data-bread-default-size="true"></div>
+      <script>
+        var opts = {
+        buttonId: 'bread-checkout-btn',
+        actAsLabel: false,
+        asLowAs: true,
+        customCSS: '.bread-text { color: #FF0000; } .bread-as-low-as:before { content: "PAY MONEY";} .bread-for:before { content: "Faw "}',
+        items: [
+        {
+          name:'Incrediproduct',
+          price:10000,
+          sku:'COUCH123',
+          imageUrl:'[REPLACEMEWITHAREALURL]',
+          detailUrl:'[REPLACEMEWITHAREALURL]', 
+          quantity: 1
+        }]
+        };
+        bread.checkout(opts);
+      </script>
+    </form>
+    </center>
+    <p>{{ words }}</p>
+    <p>{{ words }}</p>
+  </div>
+</body>
+</html>
