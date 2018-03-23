@@ -1,6 +1,7 @@
 <html>
   <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://checkout-sandbox.getbread.com/bread.js" data-api-key="4dbfe30f-0841-45bf-b281-7de2f2c62a49"></script>
   <title>Hiya!</title>
 </head>
@@ -10,15 +11,35 @@
     <form id="bread-checkout-form" action="/confirm" method="POST">
         <div id="bread-checkout-btn" data-bread-default-size="true"></div>
       <script>
+        var somePrice = 10000;
         var opts = {
         buttonId: 'bread-checkout-btn',
         actAsLabel: false,
         asLowAs: true,
-        customCSS: '.bread-text { color: #FF0000; } .bread-as-low-as:before { content: "PAY MONEY";} .bread-for:before { content: "Faw "}',
+        customCSS: '.bread-text { color: #FF0001; } .bread-as-low-as:before { content: "PAY MONEY";} .bread-for:before { content: "Faw "}',
+        calculateTax: function(shippingContact, callback) {
+          $.ajax({
+            url: '/tax',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              shippingAddress: shippingContact,
+              total: somePrice 
+            })
+          })
+          .done(function(data) {
+            // Expecting a JSON object with a key 'tax' 
+            console.log(data)
+            callback(null, data.tax)
+          })
+          .fail(function(err) {
+            callback(err)
+          });
+        },
         items: [
         {
           name:'Incrediproduct',
-          price:10000,
+          price:somePrice,
           sku:'COUCH123',
           imageUrl:'[REPLACEMEWITHAREALURL]',
           detailUrl:'[REPLACEMEWITHAREALURL]', 

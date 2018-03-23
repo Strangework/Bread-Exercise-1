@@ -2,7 +2,7 @@ Submit to us a deliverable of your choice that configures a Bread button with th
 following characteristics:
 Y • One product costing $100 is to be purchased
 N • There is both a 2-day and an overnight shipping option available for this product
-N • The tax charged to a purchaser should be 5% if the shipping address supplied by
+Y • The tax charged to a purchaser should be 5% if the shipping address supplied by
 the customer within the Bread checkout flow is in the state of NY, otherwise tax
 should be 0
 Y • Since this test merchant is pre-configured in Bread’s system with loan offerings,
