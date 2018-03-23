@@ -1,5 +1,7 @@
 # Bread Exercise 1
 
+An implementation of a Bread button adhering to exercise parameters. The web application is built upon the Flask microframework, a simple tool for writing tight and tiny web applications.
+
 ## Installation and Setup
 
 Optional: Setup a virtual environment using virtualenv
