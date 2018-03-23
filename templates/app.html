@@ -1,13 +1,13 @@
 <html>
   <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://checkout-sandbox.getbread.com/bread.js" data-api-key="4dbfe30f-0841-45bf-b281-7de2f2c62a49"></script>
   <title>Hiya!</title>
 </head>
 <body>
-  <div id="main">
+  <div id="main", style="margin-top:50px">
     <center>
+    <p id="message-box"></p>
     <form id="bread-checkout-form" action="/confirm" method="POST">
         <div id="bread-checkout-btn" data-bread-default-size="true"></div>
       <script>
@@ -16,7 +16,10 @@
         buttonId: 'bread-checkout-btn',
         actAsLabel: false,
         asLowAs: true,
-        customCSS: '.bread-text { color: #FF0001; } .bread-as-low-as:before { content: "PAY MONEY";} .bread-for:before { content: "Faw "}',
+
+        // CSS was ripped from the default button - does an easier way exist to change CSS elements without scrapping the whole button?
+        customCSS: '.bread-embed,body,html{position:absolute;top:0;right:0;bottom:0;left:0;font-family:sans-serif;margin:0;padding:0}.bread-embed{visibility:hidden}.bread-btn{border:2px solid #055170;border-radius:8px;background:#fff;font-size:13px;color:#FF0000;cursor:pointer}.bread-btn .bread-embed-inner{position:absolute;top:0;left:0;right:50px;bottom:0;padding:0 1em}.bread-btn .bread-embed-icon{position:absolute;top:-1px;right:-51px;bottom:-1px;left:100%;margin-left:-50px;margin-right:50px;background-color:#055170;background-repeat:no-repeat;background-image:url(assets/coin.svg);background-position:center;background-size:auto 30px;border-radius:0 4px 4px 0;cursor:pointer}.bread-btn .bread-pot:before{content:"Pay over time";color:#055170}.bread-dur{text-transform:uppercase}.bread-as-low-as .bread-as-low-as-info{z-index:1000;font-size:1.25em;font-weight:700;padding:3px}.bread-btn.bread-as-low-as .bread-as-low-as:before,.bread-label .bread-as-low-as:before{content:"As low as";color:#FF0000;margin-right:0!important}.bread-btn.bread-show-terms .bread-for:before,.bread-label .bread-for:before{content:"for";color:#FF0000;margin-right:.5em}.bread-center{text-align:center;vertical-align:middle;height:100%;width:100%;display:table}.bread-center-inner{display:table-cell;vertical-align:middle}.bread-label{color:#000;text-align:center}.bread-label .bread-embed-inner{display:inline-block;vertical-align:middle;height:100%}.bread-label .bread-embed-icon{vertical-align:middle;display:inline-block;background:#ef8919;border-radius:100%;width:1.25em;height:1.25em;color:#fff;line-height:1.5em;font-size:.85em;margin-top:-.2em}.bread-label .bread-embed-icon:after{content:"i"}.bread-btn.bread-show-terms .bread-for:before,.bread-btn.bread-show-terms .bread-pot:before{color:#FF0000}@media only screen and -webkit-min-device-pixel-ratio 2,only screen and min-device-pixel-ratio 2,only screen and min-resolution 192dpi,only screen and min-resolution 2dppx{.bread-btn .bread-embed-icon{background-image:url(assets/coin.svg)}}',
+
         calculateTax: function(shippingContact, callback) {
           $.ajax({
             url: '/tax',
@@ -36,6 +39,39 @@
             callback(err)
           });
         },
+
+        calculateShipping: function(shippingContact, callback) {
+          $.ajax({
+            url: '/shipping',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              shippingAddress: shippingContact,
+              total: somePrice
+            })
+          })
+          .done(function(data){
+            console.log(data)
+            callback(null, data);
+          })
+          .fail(function(err){
+            callback(err);
+          });
+        },
+
+        onCustomerClose: function(err, data) {
+          if (data.state == "PREQUALIFIED") {
+            $('#message-box').text("You are prequalified! Please buy my product!");
+          } else {
+            $('#message-box').text("You have not been prequalified for financing! This makes things harder!");
+          }
+          console.log(data)
+        },
+
+        done: function(err, txToken) {
+          $('#message-box').text("CONGRATULATIONS ON BUYING MY PRODUCT!!");
+        },
+
         items: [
         {
           name:'Incrediproduct',
@@ -50,8 +86,6 @@
       </script>
     </form>
     </center>
-    <p>{{ words }}</p>
-    <p>{{ words }}</p>
   </div>
 </body>
 </html>
